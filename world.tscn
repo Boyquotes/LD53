@@ -1,0 +1,179 @@
+[gd_scene load_steps=12 format=3 uid="uid://bs3470xvlyyfk"]
+
+[ext_resource type="PackedScene" uid="uid://casr8nlwib7op" path="res://car.tscn" id="1_32nwm"]
+[ext_resource type="Script" path="res://world.gd" id="1_mgwp8"]
+[ext_resource type="AudioStream" uid="uid://p1sd10vbp64u" path="res://crash.wav" id="4_mwpa1"]
+[ext_resource type="Shader" path="res://shadow.gdshader" id="5_serss"]
+[ext_resource type="Texture2D" uid="uid://4n2cargh0kad" path="res://background.png" id="6_me0gc"]
+[ext_resource type="Script" path="res://screen_shake.gd" id="7_6nd7s"]
+[ext_resource type="FontFile" uid="uid://ca0eddwacwmfn" path="res://NormandyBeachExpandedItalic-8MYpn.otf" id="7_imnxa"]
+[ext_resource type="AudioStream" uid="uid://ckdjo3jaquybx" path="res://music.wav" id="8_tyvik"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yjvj0"]
+shader = ExtResource("5_serss")
+shader_parameter/background_color = Color(0.286275, 0.301961, 0.494118, 1)
+shader_parameter/shadow_color = Color(0, 0, 0, 0.227451)
+shader_parameter/offset_in_pixels = Vector2(3, 6.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nyjxu"]
+bg_color = Color(0.776471, 0.623529, 0.647059, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b8re0"]
+bg_color = Color(0.152941, 0.152941, 0.266667, 1)
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_mgwp8")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(576, 324)
+texture = ExtResource("6_me0gc")
+
+[node name="DropPoints" type="Node2D" parent="."]
+
+[node name="Packages" type="Node2D" parent="."]
+
+[node name="Car" parent="." instance=ExtResource("1_32nwm")]
+position = Vector2(430, 315)
+rotation = 0.261799
+
+[node name="Crash" type="AudioStreamPlayer" parent="Car"]
+stream = ExtResource("4_mwpa1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_yjvj0")
+offset_right = 1154.0
+offset_bottom = 650.0
+metadata/_edit_lock_ = true
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = 10.0
+offset_top = 9.0
+offset_right = 1142.0
+offset_bottom = 44.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_nyjxu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_b8re0")
+max_value = 1.0
+step = 0.001
+fill_mode = 1
+show_percentage = false
+
+[node name="ColorRect" type="ColorRect" parent="ProgressBar"]
+layout_mode = 0
+offset_right = 1132.0
+offset_bottom = 35.0
+color = Color(0.776471, 0.623529, 0.647059, 1)
+
+[node name="Timer" type="Timer" parent="ProgressBar"]
+wait_time = 30.0
+one_shot = true
+
+[node name="SecondsTimer" type="Timer" parent="ProgressBar"]
+
+[node name="ScoreLabel" type="Label" parent="ProgressBar"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 987.0
+offset_bottom = 202.0
+scale = Vector2(0.145, 0.145)
+theme_override_colors/font_color = Color(0.47451, 0.360784, 0.537255, 1)
+theme_override_fonts/font = ExtResource("7_imnxa")
+theme_override_font_sizes/font_size = 185
+text = "Score: "
+vertical_alignment = 1
+
+[node name="ScoreNum" type="Label" parent="ProgressBar"]
+layout_mode = 0
+offset_left = 109.0
+offset_top = 2.0
+offset_right = 1092.0
+offset_bottom = 202.0
+scale = Vector2(0.145, 0.145)
+theme_override_colors/font_color = Color(0.47451, 0.360784, 0.537255, 1)
+theme_override_fonts/font = ExtResource("7_imnxa")
+theme_override_font_sizes/font_size = 185
+text = "0"
+vertical_alignment = 1
+
+[node name="Highscore" type="Label" parent="ProgressBar"]
+visible = false
+layout_mode = 0
+offset_left = 914.0
+offset_top = 2.0
+offset_right = 2330.0
+offset_bottom = 202.0
+scale = Vector2(0.145, 0.145)
+theme_override_colors/font_color = Color(0.47451, 0.360784, 0.537255, 1)
+theme_override_fonts/font = ExtResource("7_imnxa")
+theme_override_font_sizes/font_size = 185
+text = "Highscore: 0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TimeLeft" type="Label" parent="ProgressBar"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 3.0
+offset_right = 7808.0
+offset_bottom = 203.0
+scale = Vector2(0.145, 0.145)
+theme_override_colors/font_color = Color(0.47451, 0.360784, 0.537255, 1)
+theme_override_fonts/font = ExtResource("7_imnxa")
+theme_override_font_sizes/font_size = 185
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="Countdown" type="Label" parent="StartTimer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = -115.0
+offset_right = 64.0
+offset_bottom = 115.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("7_imnxa")
+theme_override_font_sizes/font_size = 230
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EndScreen" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Label" type="Label" parent="EndScreen"]
+offset_left = 1.0
+offset_top = 209.0
+offset_right = 1152.0
+offset_bottom = 439.0
+theme_override_colors/font_color = Color(0.776471, 0.623529, 0.647059, 1)
+theme_override_fonts/font = ExtResource("7_imnxa")
+theme_override_font_sizes/font_size = 120
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScreenShake" type="Camera2D" parent="."]
+position = Vector2(576, 324)
+script = ExtResource("7_6nd7s")
+
+[node name="shake_timer" type="Timer" parent="ScreenShake"]
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_tyvik")
+volume_db = -10.307
+autoplay = true
+
+[connection signal="timeout" from="ProgressBar/Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="ProgressBar/SecondsTimer" to="." method="_on_seconds_timer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="timeout" from="ScreenShake/shake_timer" to="ScreenShake" method="_on_shake_timer_timeout"]

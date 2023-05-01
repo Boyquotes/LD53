@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://dm073pyewwk7u"]
+
+[ext_resource type="Script" path="res://lore.gd" id="1_1mp8i"]
+[ext_resource type="FontFile" uid="uid://df7r7km5s3qy8" path="res://SFPRODISPLAYREGULAR.OTF" id="1_uiuwd"]
+[ext_resource type="Script" path="res://start_prompt.gd" id="3_u2gwi"]
+
+[node name="StartScreen" type="CanvasLayer"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0980392, 0.0980392, 0.0980392, 1)
+
+[node name="Lore" type="Node2D" parent="."]
+script = ExtResource("1_1mp8i")
+
+[node name="Label" type="Label" parent="Lore"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 301.0
+offset_top = 200.0
+offset_right = 2479.0
+offset_bottom = 935.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+theme_override_fonts/font = ExtResource("1_uiuwd")
+theme_override_font_sizes/font_size = 90
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="next_char" type="Timer" parent="Lore"]
+
+[node name="StartPrompt" type="Node2D" parent="."]
+script = ExtResource("3_u2gwi")
+
+[node name="Label" type="Label" parent="StartPrompt"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 301.0
+offset_top = 382.0
+offset_right = 2479.0
+offset_bottom = 532.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+theme_override_fonts/font = ExtResource("1_uiuwd")
+theme_override_font_sizes/font_size = 90
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="next_char" type="Timer" parent="StartPrompt"]
+
+[connection signal="lore_done" from="Lore" to="StartPrompt" method="_on_lore_done"]
+[connection signal="timeout" from="Lore/next_char" to="Lore" method="_on_next_char_timeout"]
+[connection signal="timeout" from="StartPrompt/next_char" to="StartPrompt" method="_on_next_char_timeout"]

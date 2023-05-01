@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://djbua1dq4jutn"]
+
+[ext_resource type="Texture2D" uid="uid://d38cr2tm85214" path="res://soul.png" id="1_yw85m"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7vnwt"]
+radius = 7.42857
+height = 18.2857
+
+[node name="Soul" type="Sprite2D" groups=["souls"]]
+scale = Vector2(1.75, 1.75)
+texture = ExtResource("1_yw85m")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-5.96046e-08, -0.571429)
+shape = SubResource("CapsuleShape2D_7vnwt")

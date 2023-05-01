@@ -1,0 +1,113 @@
+[gd_scene load_steps=15 format=3 uid="uid://diu5ecwc75ojc"]
+
+[ext_resource type="Texture2D" uid="uid://bpdhjncpsasry" path="res://man_cured.png" id="1_ewe7j"]
+[ext_resource type="Texture2D" uid="uid://dgjq5k2qaqmyi" path="res://man.png" id="1_ireif"]
+[ext_resource type="Script" path="res://drop_point.gd" id="2_tybx6"]
+[ext_resource type="Texture2D" uid="uid://lssdqcopwa5t" path="res://die-1.png" id="4_6swh6"]
+[ext_resource type="Texture2D" uid="uid://nnykpq26e8v3" path="res://die-2.png" id="5_ca5e7"]
+[ext_resource type="Texture2D" uid="uid://bhrrahs1prc2b" path="res://die-3.png" id="6_b0sbs"]
+[ext_resource type="Texture2D" uid="uid://dslme8fgtc6dt" path="res://die-4.png" id="7_s672d"]
+[ext_resource type="Texture2D" uid="uid://bex4tvkmmg5au" path="res://die-5.png" id="8_8hsyb"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_81rec"]
+radius = 6.22222
+height = 18.6667
+
+[sub_resource type="Animation" id="Animation_7ibx2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_ireif")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.25, 2.25)]
+}
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_o7y7b"]
+load_path = "res://.godot/imported/man_cured-1.png-04073438a66a54823718c24a6d42c7db.ctex"
+
+[sub_resource type="Animation" id="Animation_iqrjk"]
+resource_name = "cured"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("1_ewe7j"), SubResource("CompressedTexture2D_o7y7b")]
+}
+
+[sub_resource type="Animation" id="Animation_bltrx"]
+resource_name = "die"
+length = 0.62
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.07, 0.14, 0.3, 0.46, 0.62),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("4_6swh6"), ExtResource("5_ca5e7"), ExtResource("6_b0sbs"), ExtResource("7_s672d"), ExtResource("8_8hsyb"), null]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.62),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(2.5, 2.5), Vector2(2.5, 2.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_13b88"]
+_data = {
+"RESET": SubResource("Animation_7ibx2"),
+"cured": SubResource("Animation_iqrjk"),
+"die": SubResource("Animation_bltrx")
+}
+
+[node name="DropPoint" type="Sprite2D"]
+scale = Vector2(2.25, 2.25)
+texture = ExtResource("1_ireif")
+script = ExtResource("2_tybx6")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_81rec")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_13b88")
+}
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
